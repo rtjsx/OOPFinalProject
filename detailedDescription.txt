@@ -1,0 +1,125 @@
+files: file for account request, file for exisiting accounts (with their corresponding deposit and withdrawal history), file for account deletion requests(by id so they can be selected), serialized password keeper (holds the username : password pairs by account id, and is serialized so that it cannot be read by a human if opened).
+
+The admin authentication should already be decided before the program begins. So the username and password are not chosen by the admin logging in, but should be known beforehand and included in the code. 
+
+After a new user fills out the form. The information for that specific user should be added to a file( with a number id representing it), and that file should be read when the admin selects to look through the exisiting account request. Then the admin can select a particular account request by its particular id, when viewing deletion and approval requests.  
+
+Everything, all interactions and menus displayed below should be displayed and entered in the console.
+
+
+- When the program gets started, the following main menu should get displayed: 
+——————————
+Welcome to the best banking app!
+
+If you are a new user enter (1):
+If you are an exisiting user enter (2):
+If you are an admin enter (3).
+To end the program enter (4).
+
+——————————
+
+- after a selection is made the user transferred to another menu depending on their choice.
+
+- if the user chose 1 for a new user the following form should be displayed ( and aftering filling out the information, the user should be redirected back to the main page):
+
+——————————
+Please fill out the following form:
+
+Username:
+Password:
+Name:
+Initial deposit (minimum $100):
+Age:
+Credit score:
+——————————
+
+- if the user chose 2, the following authentication page should be displayed:
+
+——————————
+Welcome back!
+
+Please enter your credentials:
+
+Username:
+Password:
+——————————
+
+- if the user chose 3, the following authentication page shoulde be displayed:
+
+——————————
+Welcome Admin!
+
+Please enter your credentials:
+
+Username:
+Password:
+——————————
+
+
+- if the user chose 4, the program ends.
+
+- In the case of an incorrect username and password. The following alert should be displayed in the console, and the user is redirected back to the main menu.
+
+
+——————————
+
+Oh, oh - it looks like such credentials do not exist :(
+
+Redirecting you back to main menu….
+
+
+——————————
+
+- when an exisiting user enters correct credentials, they should see the following menu:
+
+——————————
+Welcome back!
+
+If you want to withdraw enter (1):
+If you want to deposit enter (2):
+If you want to view your deposit/withdrawal history enter (3).
+If you want your account to be deleted enter (4).
+Enter (5) to exit and return to the main menu.
+——————————
+
+
+
+- if the existing user enters (1). The will then be asked how much they want to withdraw. If they attempt to withdraw more than existing funds, an alert message is displayed that this is not allowed and the user is sent back to the exisiting user main menu. The amount with the current date is added to the transaction history of the user.
+- if the existing user enters (2). The user is then asked how much they want to deposit. They select the amount and the money is added to their balance.  The amount with the current date is added to the transaction history of the user.
+- if the existing user enters (3). The user is shown all previous transactions. The user is shown a message which says: Press any key to return to existing user menu. By pressing any key, he is returned to the main existing user menu.
+- if the existing user enters (4). The user is then asked: Are you sure? Enter (1) to confirm, enter (2) to return existing user menu.  If the user confirm with (1) that they want their account to be deleted. They are automatically logged out back to the entry main menu, and their account details with the account id added to the file of account deletion request, where it can later be viewed and deleted by an admin.
+- if the existing user enters (5). The user is logged out and returned to main entry menu.
+
+- when the admin enters correct credentials, they should see the following menu:
+
+——————————
+Welcome back!
+
+If you want to view account requests for creation, enter (1):
+If you want to view account requests for deletion, enter (2):
+If you want to display existing accounts (account id, their name, age, credit score, and total money on account), enter (3).
+Enter (4) to exit and return to the main menu.
+——————————
+
+
+- if the admin selects (1). The file with the file creation request should be read. After it is read, all requests should be displayed with a corresponding id.
+- The admin is then asked by the program: Enter (1) to exit. Enter (2) to approve.
+- If the admin enters (2), he is asked: Which account do you want to approve?
+- The admin enters the id that he want to approve. The data is removed from the file with approval requests and an account with its own id is added to the file of exisiting users. 
+- Admin sees a confirmation message: Account with id (id) created!
+- Then the admin is returned to the admin main menu.
+
+- if the admin selects (2). The file with the file deletion requests should be read. After it is read, all requests should be displayed with a corresponding id.
+- The admin is then asked by the program: Enter (1) to exit. Enter (2) to delete.
+- If the admin enters (2), he is asked: Which account do you want to delete?
+- The admin enters the id that he want to delete. The data is removed from the file with delete requests and the account is deleted from exisiting users. 
+- Admin sees a confirmation message: Account with id (id) deleted!
+- Then the admin is returned to the admin main menu.
+
+- If the admin selects (3). All the exisiting users are displayed. Each user is displayed with their account id,their name, age, credit score, and total money on account. The admin  is shown a message which says: Press any key to return to existing user menu. By pressing any key, he is returned to main admin menu.
+
+- if the admin selects (4). The admin is logged out and returned to main entry menu.
+
+——————————
+
+
