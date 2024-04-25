@@ -123,3 +123,62 @@ Enter (4) to exit and return to the main menu.
 ——————————
 
 
+Main Classes
+
+1. MainApp
+    * Entry point for the application.
+    * Handles the main menu and redirects to user, admin, or exit based on the user’s choice.
+2. UserManager
+    * Handles operations related to user accounts including registration, login, and transaction management.
+3. AdminManager
+    * Manages admin functions such as approving new accounts, deleting accounts, and viewing accounts and requests.
+4. Account
+    * Represents a user account with attributes like username, password, name, age, credit score, and balance.
+    * Manages individual user transactions like deposits and withdrawals.
+5. Transaction
+    * Represents a transaction with attributes like type (deposit, withdrawal), amount, and date.
+
+
+ Utility and Storage Classes
+
+1. FileHandler
+    * Handles reading and writing to files (accounts, transactions, requests for creation and deletion).
+    * Serializes and deserializes data where necessary.
+2. Authentication
+    * Manages login procedures for users and the admin.
+    * Verifies credentials against stored data.
+3. InputHelper
+    * Helps in managing input and output in the console.
+    * Handles user inputs and displays messages or menus.
+
+
+
+Implementation Details
+
+1. MainApp Class
+    * Displays the main menu and handles the redirection based on user input.
+    * Creates instances of UserManager and AdminManager as needed.
+2. UserManager Class
+    * Manages all user-related functionalities such as signing up a new user, logging in existing users, processing deposit and withdrawal requests, and handling account deletion.
+3. AdminManager Class
+    * Handles the functionalities required by an admin, such as viewing account creation and deletion requests, approving or deleting accounts, and viewing all existing accounts.
+4. Account Class
+    * Contains user data and methods to handle deposits, withdrawals, and returning transaction history.
+5. Transaction Class
+    * Stores details about each transaction and can format details for display or storage.
+6. FileHandler Class
+    * Handles all file operations like reading from and writing to files, searching for specific data in files, and updating files as needed. Implements serialization for secure storage of sensitive information like passwords.
+7. Authentication Class
+    * Provides methods to authenticate users and admin using stored username and password combinations. Could include password encryption for security.
+8. InputHelper Class
+    * Handles console inputs and outputs, abstracting the complexity of user interaction and validation.
+
+
+
+Example Usage
+* Upon starting the app, MainApp displays the main menu.
+* Depending on the selection, UserManager or AdminManager takes over.
+* Actions like creating an account will involve UserManager creating a new Account instance and using FileHandler to save it to accountRequests.txt.
+* Admin actions will read from request files, modify account data as needed, and update storage files using FileHandler.
+
+
