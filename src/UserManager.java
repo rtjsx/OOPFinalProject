@@ -111,8 +111,9 @@ public class UserManager {
                 case 5:
                     if (account.requestDeletion()) {
                         System.out.println("Account deletion requested.");
+                        active = false; // End session only if deletion confirmed
                     }
-                    active = false;
+
                     break;
                 case 6:
                     active = false;

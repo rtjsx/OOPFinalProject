@@ -37,7 +37,7 @@ public class AdminManager {
             FileHandler.removeDeletionRequest(usernameToDelete);
             System.out.println("Account with username " + usernameToDelete + " deleted!");
         } else {
-            System.out.println("No requests in inbox.");
+            System.out.println("No matching account request found.");
         }
     }
 

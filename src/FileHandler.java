@@ -86,23 +86,29 @@ public class FileHandler {
         }
         return new Account(parts[0], parts[1], parts[2], Double.parseDouble(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
     }
-    
-    // Display account requests
+
+
+    // Display account requests without showing passwords
     public static void displayAccountRequests() {
         boolean requestsFound = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(ACCOUNT_REQUESTS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-                requestsFound = true;
+                Account account = deserializeAccountRequest(line);
+                if (account != null) {
+                    System.out.printf("Username: %s, Name: %s, Balance: $%.2f, Age: %d, Credit Score: %d%n",
+                            account.getUsername(), account.getName(), account.getBalance(), account.getAge(), account.getCreditScore());
+                    requestsFound = true;
+                }
             }
         } catch (IOException e) {
-            // Ignore error silently
+            System.out.println("Error reading account requests: " + e.getMessage());
         }
         if (!requestsFound) {
             System.out.println("No requests in inbox.");
         }
     }
+
 
     public static boolean isPendingApproval(String username) {
         try (BufferedReader reader = new BufferedReader(new FileReader("accountRequests.txt"))) {
@@ -199,13 +205,15 @@ public class FileHandler {
     // Update account balance for withdrawal/deposit
     public static void updateAccountBalance(Account account) {
         List<Account> accounts = new ArrayList<>();
+        boolean updated = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(EXISTING_ACCOUNTS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 Account acc = deserializeAccount(line);
                 if (acc != null && acc.getUsername().equals(account.getUsername())) {
-                    accounts.add(account);
+                    accounts.add(account); // Update with the new balance
+                    updated = true;
                 } else {
                     accounts.add(acc);
                 }
@@ -214,17 +222,22 @@ public class FileHandler {
             System.out.println("Error reading existing accounts: " + e.getMessage());
         }
 
-        // Write back updated accounts to the file
-        try (PrintWriter writer = new PrintWriter(new FileWriter(EXISTING_ACCOUNTS_FILE))) {
+        // Rewrite all accounts back to the file
+        try (PrintWriter writer = new PrintWriter(new FileWriter(EXISTING_ACCOUNTS_FILE, false))) {
             for (Account acc : accounts) {
                 writer.println(serializeAccount(acc));
             }
         } catch (IOException e) {
-            System.out.println("Error saving updated accounts: " + e.getMessage());
+            System.out.println("Error writing updated accounts: " + e.getMessage());
+        }
+
+        if (!updated) {
+            System.out.println("Account not found for update.");
         }
     }
 
-    
+
+
 
     // Load account requests
     public static Account loadAccountRequest(String username) {

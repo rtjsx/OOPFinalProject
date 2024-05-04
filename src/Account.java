@@ -1,8 +1,7 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Collections;
-import java.time.LocalDateTime;
 
 public class Account {
     private String username;
@@ -33,13 +32,18 @@ public class Account {
         } else {
             balance -= amount;
             transactionHistory.add(new Transaction("withdrawal", amount, LocalDateTime.now())); // Add transaction
+            FileHandler.updateAccountBalance(this); // Save updated balance immediately
+            System.out.printf("Withdrawal of $%.2f successful. Current balance: $%.2f%n", amount, balance);
         }
     }
 
     public void deposit(double amount) {
         balance += amount;
         transactionHistory.add(new Transaction("deposit", amount, LocalDateTime.now())); // Add transaction
+        FileHandler.updateAccountBalance(this); // Save updated balance immediately
+        System.out.printf("Deposit of $%.2f successful. Current balance: $%.2f%n", amount, balance);
     }
+
 
     public void showHistory() {
         List<Transaction> sortedTransactions = new ArrayList<>(transactionHistory); // Sort transactions
