@@ -53,8 +53,10 @@ public class UserManager {
         }
         int creditScore = scanner.nextInt();
         scanner.nextLine(); // Consume newline
-    
-        Account newAccount = new Account(username, password, name, initialDeposit, age, creditScore);
+
+        String hashedPassword = PasswordUtils.hashPassword(password);  // Hash the password
+
+        Account newAccount = new Account(username, hashedPassword, name, initialDeposit, age, creditScore);
         FileHandler.saveAccountRequest(newAccount);
         System.out.println("Form submitted! Redirecting to main menu...");
     }

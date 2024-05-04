@@ -13,16 +13,22 @@ public class Authentication {
 
     public static boolean verifyUserCredentials(String username, String password) {
         Map<String, String> userCredentials = FileHandler.loadApprovedUserCredentials();
-
-        if (userCredentials.containsKey(username)) {
-            return password.equals(userCredentials.get(username));
-        } else {
-            System.out.println("Invalid credentials or pending approval.");
+        try {
+            String hashedPassword = PasswordUtils.hashPassword(password);
+            if (userCredentials.containsKey(username)) {
+                return hashedPassword.equals(userCredentials.get(username));
+            } else {
+                System.out.println("Invalid credentials or pending approval.");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Error hashing password: " + e.getMessage());
+            return false;
         }
         return false;
     }
 
-    
+
+
     private static Map<String, String> loadApprovedUserCredentials() {
         Map<String, String> userCredentials = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("existingAccounts.txt"))) {
