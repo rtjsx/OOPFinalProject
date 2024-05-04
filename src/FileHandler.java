@@ -28,11 +28,11 @@ public class FileHandler {
 
     // Save new account request
     public static void saveAccountRequest(Account account) {
-        if (isDuplicateAccountRequest(account.getUsername()) || isUsernameTaken(account.getUsername())) {
+        if (isDuplicateAccountRequest(account.getUsername())) {
             System.out.println("Username already taken or account creation request already submitted! Pending approval...");
             return;
         }
-        try (PrintWriter writer = new PrintWriter(new FileWriter(ACCOUNT_REQUESTS_FILE, true))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("accountRequests.txt", true))) {
             writer.println(serializeAccountRequest(account));
         } catch (IOException e) {
             System.out.println("Error saving account request: " + e.getMessage());
@@ -75,7 +75,16 @@ public class FileHandler {
 
     // Method to serialize account request
     private static String serializeAccountRequest(Account account) {
-        return String.format("%s,%s,%d", account.getUsername(), account.getName(), account.getAge());
+        return String.format("%s,%s,%s,%f,%d,%d", account.getUsername(), account.getPassword(), account.getName(), account.getBalance(), account.getAge(), account.getCreditScore());
+    }
+
+    private static Account deserializeAccountRequest(String data) {
+        String[] parts = data.split(",");
+        if (parts.length < 6) {
+            System.out.println("Incorrect data format in account request file");
+            return null; 
+        }
+        return new Account(parts[0], parts[1], parts[2], Double.parseDouble(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
     }
     
     // Display account requests
@@ -219,10 +228,10 @@ public class FileHandler {
 
     // Load account requests
     public static Account loadAccountRequest(String username) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(ACCOUNT_REQUESTS_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("accountRequests.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                Account account = deserializeAccount(line);
+                Account account = deserializeAccountRequest(line);
                 if (account != null && account.getUsername().equals(username)) {
                     return account;
                 }
@@ -306,6 +315,7 @@ public class FileHandler {
     // Save an account to the existing accounts file
     public static void saveExistingAccount(Account account) {
         removeAccountRequest(account.getUsername());
+    
         try (PrintWriter writer = new PrintWriter(new FileWriter(EXISTING_ACCOUNTS_FILE, true))) {
             writer.println(serializeAccount(account));
         } catch (IOException e) {
@@ -315,21 +325,21 @@ public class FileHandler {
 
     // Remove an account request
     public static void removeAccountRequest(String username) {
-        List<Account> accounts = new ArrayList<>();
+        List<Account> requests = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ACCOUNT_REQUESTS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                Account acc = deserializeAccount(line);
+                Account acc = deserializeAccountRequest(line);
                 if (acc != null && !acc.getUsername().equals(username)) {
-                    accounts.add(acc);
+                    requests.add(acc);
                 }
             }
         } catch (IOException e) {
             System.out.println("Error reading account requests: " + e.getMessage());
         }
-
+    
         try (PrintWriter writer = new PrintWriter(new FileWriter(ACCOUNT_REQUESTS_FILE))) {
-            for (Account acc : accounts) {
+            for (Account acc : requests) {
                 writer.println(serializeAccountRequest(acc));
             }
         } catch (IOException e) {

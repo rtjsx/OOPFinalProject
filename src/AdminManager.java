@@ -23,14 +23,12 @@ public class AdminManager {
         String usernameToApprove = scanner.next();
         Account account = FileHandler.loadAccountRequest(usernameToApprove);
         if (account != null) {
-            FileHandler.saveExistingAccount(account);
-            System.out.println("Account with username " + usernameToApprove + " has been approved!");
+            FileHandler.saveExistingAccount(account); // Save account correctly
+            System.out.println("Account with username " + usernameToApprove + " approved!");
         } else {
-            System.out.println("No account creation requests found for the provided username.");
+            System.out.println("No matching account request found.");
         }
-    }
-    
-    
+    }    
 
     private void approveAccountDeletion() {
         System.out.print("Enter username to delete: ");
