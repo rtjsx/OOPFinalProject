@@ -17,6 +17,7 @@ public class FileHandler {
         } catch (IOException e) {
             System.out.println("Error creating required files: " + e.getMessage());
         }
+    }
 
     private static void createFileIfNotExists(String fileName) throws IOException {
         File file = new File(fileName);
