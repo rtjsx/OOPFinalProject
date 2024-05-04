@@ -20,8 +20,11 @@ public class Account {
         this.balance = initialDeposit;
         this.age = age;
         this.creditScore = creditScore;
-        this.transactionHistory = new ArrayList<>();
-        this.transactionHistory.add(new Transaction("deposit", initialDeposit, LocalDateTime.now())); // Initial deposit as a transaction
+        this.transactionHistory = new ArrayList<>(); // Initialize the transaction history
+    }
+
+    public void displayBalance() {
+        System.out.printf("Current balance: $%.2f%n", balance);
     }
 
     public void withdraw(double amount) {
@@ -29,36 +32,23 @@ public class Account {
             System.out.println("Insufficient funds. Transaction failed.");
         } else {
             balance -= amount;
-            transactionHistory.add(new Transaction("withdrawal", amount, LocalDateTime.now()));
-            FileHandler.updateAccountBalance(this); // Persist balance
-            System.out.println("$" + amount + " withdrawn successfully.");
+            transactionHistory.add(new Transaction("withdrawal", amount, LocalDateTime.now())); // Add transaction
         }
     }
 
     public void deposit(double amount) {
         balance += amount;
-        transactionHistory.add(new Transaction("deposit", amount, LocalDateTime.now()));
-        FileHandler.updateAccountBalance(this); // Persist balance
-        System.out.println("$" + amount + " deposited successfully.");
-    }
-
-    public void displayBalance() {
-        System.out.printf("Current balance: $%.2f%n", balance);
+        transactionHistory.add(new Transaction("deposit", amount, LocalDateTime.now())); // Add transaction
     }
 
     public void showHistory() {
-        System.out.printf("Current balance: $%.2f%n", balance);
-
-        List<Transaction> sortedTransactions = new ArrayList<>(transactionHistory);
-        Collections.reverse(sortedTransactions); // Reverse to get most recent first
-
+        List<Transaction> sortedTransactions = new ArrayList<>(transactionHistory); // Sort transactions
         for (Transaction transaction : sortedTransactions) {
-            System.out.println(transaction);
+            System.out.println(transaction); // Display transactions
         }
-
-        System.out.println("Press any key to return to the menu.");
-        new Scanner(System.in).nextLine();
     }
+
+
 
     public boolean requestDeletion() {
         System.out.println("Are you sure? Enter (1) to confirm, enter (2) to return to menu.");
