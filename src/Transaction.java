@@ -6,13 +6,16 @@ public class Transaction {
     private final double amount;
     private final LocalDateTime date;
 
-
     public Transaction(String type, double amount) {
+        this(type, amount, LocalDateTime.now());
+    }
+    
+    // New constructor to accept a date parameter
+    public Transaction(String type, double amount, LocalDateTime date) {
         this.type = type;
         this.amount = amount;
-        this.date = LocalDateTime.now(); // Capture the transaction time
+        this.date = date; // Set the provided date
     }
-
 
     public String getType() {
         return type;

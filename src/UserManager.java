@@ -4,38 +4,75 @@ public class UserManager {
     private final Scanner scanner = new Scanner(System.in);
 
     public void handleNewUser() {
+        FileHandler.ensureFilesExist();
         System.out.println("Please fill out the following form:");
-        System.out.println("Username:");
+        System.out.print("Username: ");
         String username = scanner.next();
-        System.out.println("Password:");
+        System.out.print("Password: ");
         String password = scanner.next();
-        System.out.println("Name:");
+        System.out.print("Name: ");
         String name = scanner.next();
-        System.out.println("Initial deposit (minimum $100):");
-        double initialDeposit = scanner.nextDouble();
-        System.out.println("Age:");
-        int age = scanner.nextInt();
-        System.out.println("Credit score:");
+    
+        double initialDeposit = 0;
+        boolean validDeposit = false;
+        while (!validDeposit) {
+            System.out.print("Initial deposit (minimum $100): ");
+            if (scanner.hasNextDouble()) {
+                initialDeposit = scanner.nextDouble();
+                if (initialDeposit >= 100) {
+                    validDeposit = true;
+                } else {
+                    System.out.println("Invalid amount. Minimum deposit is $100.");
+                    scanner.nextLine(); // Consume newline and prompt for input again
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a numeric value.");
+                scanner.next(); // Clear invalid input
+                scanner.nextLine(); // Consume newline
+            }
+        }
+    
+        int age = 0;
+        boolean validAge = false;
+        while (!validAge) {
+            System.out.print("Age: ");
+            if (scanner.hasNextInt()) {
+                age = scanner.nextInt();
+                validAge = true;
+            } else {
+                System.out.println("Invalid input. Please enter a numeric value.");
+                scanner.next(); // Clear invalid input
+                scanner.nextLine(); // Consume newline
+            }
+        }
+    
+        System.out.print("Credit score: ");
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a numeric value.");
+            return; // Exit the method if input is not numeric
+        }
         int creditScore = scanner.nextInt();
-
+        scanner.nextLine(); // Consume newline
+    
         Account newAccount = new Account(username, password, name, initialDeposit, age, creditScore);
         FileHandler.saveAccountRequest(newAccount);
         System.out.println("Form submitted! Redirecting to main menu...");
     }
+    
+    
 
     public void handleExistingUser() {
         System.out.println("Welcome back!");
-        System.out.println("Please enter your credentials:");
-        System.out.println("Username:");
+        System.out.print("Please enter your credentials:\nUsername: ");
         String username = scanner.next();
-        System.out.println("Password:");
+        System.out.print("Password: ");
         String password = scanner.next();
 
+        FileHandler.ensureFilesExist();
         if (Authentication.verifyUserCredentials(username, password)) {
             showUserMenu(username);
         } else {
-            System.out.println("Oh, oh - it looks like such credentials do not exist :(");
-            System.out.println("Redirecting you back to the main menu…");
+            System.out.println("Invalid credentials or pending approval.");
         }
     }
 
@@ -43,23 +80,25 @@ public class UserManager {
         boolean active = true;
         while (active) {
             System.out.println("Welcome back!");
-            System.out.println("If you want to withdraw enter (1):");
-            System.out.println("If you want to deposit enter (2):");
-            System.out.println("If you want to view your deposit/withdrawal history enter (3):");
-            System.out.println("If you want your account to be deleted enter (4):");
-            System.out.println("Enter (5) to exit and return to the main menu.");
+            System.out.println("(1) Withdraw");
+            System.out.println("(2) Deposit");
+            System.out.println("(3) View transaction history");
+            System.out.println("(4) Display balance");
+            System.out.println("(5) Request account deletion");
+            System.out.println("(6) Exit and return to main menu");
+            System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             Account account = FileHandler.loadAccount(username);
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter amount to withdraw:");
+                    System.out.print("Enter amount to withdraw: ");
                     double withdrawalAmount = scanner.nextDouble();
                     account.withdraw(withdrawalAmount);
                     break;
                 case 2:
-                    System.out.println("Enter amount to deposit:");
+                    System.out.print("Enter amount to deposit: ");
                     double depositAmount = scanner.nextDouble();
                     account.deposit(depositAmount);
                     break;
@@ -67,12 +106,15 @@ public class UserManager {
                     account.showHistory();
                     break;
                 case 4:
+                    account.displayBalance();
+                    break;
+                case 5:
                     if (account.requestDeletion()) {
                         System.out.println("Account deletion requested.");
                     }
                     active = false;
                     break;
-                case 5:
+                case 6:
                     active = false;
                     break;
                 default:
