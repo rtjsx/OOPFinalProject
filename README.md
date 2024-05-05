@@ -206,4 +206,11 @@ Choose an option:
 * **Methods:**
     * `hashPassword(String password)`: Hashes a password and returns its Base64 representation.
 
+<<<<<<< HEAD
+=======
+
+    * `readInt(String prompt)`: Prompts the user for an integer input.
+    * `readDouble(String prompt)`: Prompts the user for a double input.
+    * `pressAnyKeyToContinue(String message)`: Displays a message and waits for the user to press any key.
+>>>>>>> 904d72ae8a5e12043aafabf1e7558670523089ed
 
