@@ -1,95 +1,205 @@
-# Banking Application System README
+# README.md
 
-## Overview
-This document provides a detailed outline of the banking application system, explaining the data management, user processes, program menus, and admin-specific functionalities. This ensures clear understanding and efficient interaction with the system for both users and administrators.
+## Console Banking Application
 
-## Files and Data Management
-- **Account Requests File**: Contains new user applications with details such as name, username, initial deposit, age, and credit score.
-- **Existing Accounts File**: Includes all data on current users, like account balances and transaction histories.
-- **Account Deletion Requests File**: Features accounts marked for deletion by their ID.
-- **Serialized Password Keeper**: An encrypted file storing username-password pairs, preventing unauthorized data access.
+### Admin Credentials
+- **Username:** `admin`
+- **Password:** `adminPass`
 
-## Admin Authentication
-- **Pre-configured Credentials**: Administrator credentials are hard-coded into the system for secure authentication without user input during runtime.
+### Files
+- **Account Requests:** `existingRequests.txt`
+- **Existing Accounts & History:** `existingAccount.txt`
+- **Deletion Requests:** `deletionRequests.txt`
 
-## User Processes and Interface
-- **New User Submission**: Captures and stores data from new user submissions in the Account Requests File with a unique ID crucial for administrative operations.
+### Overview
 
-## Program Menus
+The application provides a simple banking system through console interaction. Users can register, log in, and manage their transactions. Admins can view and approve account creation/deletion requests and all existing users, along with their specific user information.
 
 ### Main Menu
-
+```
+——————————
 Welcome to the best banking app!
 (1) New user registration
 (2) Existing user login
 (3) Admin access
 (4) Exit program
+——————————
+Choose an option:
+```
 
-### New User Registration Form
+### New User Registration
+```
+——————————
+Please fill out the following form:
 
-Please complete the registration form:
 Username:
 Password:
-Full Name:
-Initial Deposit (minimum $100):
+Name:
+Initial deposit (minimum $100):
 Age:
-Credit Score:
-
-
-Submission redirects to the main menu.
+Credit score:
+——————————
+```
 
 ### Existing User Login
+```
+——————————
+Welcome back!
 
-Please enter your login details:
+Please enter your credentials:
+
 Username:
 Password:
+——————————
+```
 
-Successful login leads to the user-specific menu.
+### Admin Access
+```
+——————————
+Welcome Admin!
 
-### Admin Login
+Please enter your credentials:
 
-Administrator Login:
 Username:
 Password:
+——————————
+```
 
-## Error Handling
-- **Invalid Credentials**:
+### Incorrect Credentials Alert
+```
+——————————
 
-- Incorrect username or password.
-Redirecting to the main menu...
+User with uch credentials do not exist..
 
-## User Navigation and Functionality
+Redirecting you back to main menu….
 
-### Existing User Functional Menu
+——————————
+```
 
-Account Management:
-(1) Withdraw funds
-(2) Deposit funds
+### Existing User Menu
+```
+——————————
+Welcome back!
+(1) Withdraw
+(2) Deposit
 (3) View transaction history
-(4) Request account deletion
-(5) Logout and return to main menu
+(4) Display balance
+(5) Request account deletion
+(6) Exit and return to main menu
+Choose an option:
+——————————
+```
 
+### Admin Menu
+```
+——————————
+Welcome back!
+(1) View account requests for creation
+(2) View account requests for deletion
+(3) Display existing accounts
+(4) Approve account creation requests
+(5) Approve account deletion requests
+(6) Exit and return to the main menu
+Choose an option:
+——————————
+```
 
+### Main Classes
 
-- **Withdraw Funds**: Check balance before withdrawal; if sufficient, update balance and history.
-- **Deposit Funds**: Add specified deposit amount to balance and update history.
-- **View Transactions**: Display all transaction records with an option to return to the menu.
-- **Request Deletion**: Confirm deletion intent, log out user and add ID to deletion file.
-- **Logout**: Terminate session and navigate back to the main menu.
+#### 1. `MainApp`
+* **Description:** Entry point for the application.
+* **Responsibilities:**
+    * Displays the main menu and handles navigation to user, admin, or exit based on the user’s choice.
+    * Utilizes the `UserManager` and `AdminManager` for user and admin-related operations.
+* **Methods:**
+    * `main(String[] args)`: Initializes the application and loops through the main menu options.
 
-## Admin-Specific Functions
+#### 2. `UserManager`
+* **Description:** Handles operations related to user accounts, including registration, login, and transaction management.
+* **Responsibilities:**
+    * Manages new user registration, login, and session management.
+    * Manages individual user transactions like deposits and withdrawals.
+* **Methods:**
+    * `handleNewUser()`: Registers a new user and saves the account request for approval.
+    * `handleExistingUser()`: Authenticates an existing user and redirects to the user menu.
+    * `showUserMenu(String username)`: Provides the user menu options for transactions, balance, and history.
 
-### Admin Functional Menu
+#### 3. `AdminManager`
+* **Description:** Manages admin functions such as approving new accounts, deleting accounts, and viewing accounts and requests.
+* **Responsibilities:**
+    * Authenticates admin credentials and provides the admin menu.
+    * Manages approval of account creation and deletion requests.
+* **Methods:**
+    * `handleAdmin()`: Authenticates an admin and redirects to the admin menu.
+    * `approveAccountCreation()`: Approves a new account request.
+    * `approveAccountDeletion()`: Approves a request for account deletion.
+    * `showAdminMenu()`: Displays the admin menu with account-related options.
 
-Administrative Tasks:
-(1) Manage account creation requests
-(2) Process account deletion requests
-(3) Review all existing accounts
-(4) Logout
+#### 4. `Account`
+* **Description:** Represents a user account with attributes like username, password, name, age, credit score, and balance.
+* **Responsibilities:**
+    * Manages individual user transactions like deposits and withdrawals.
+    * Keeps a transaction history and provides account information.
+* **Methods:**
+    * `displayBalance()`: Displays the current balance.
+    * `withdraw(double amount)`: Withdraws a specified amount from the balance.
+    * `deposit(double amount)`: Deposits a specified amount to the balance.
+    * `showHistory()`: Displays the transaction history.
+    * `requestDeletion()`: Requests the deletion of the account.
+    * `addTransaction(Transaction transaction)`: Adds a transaction to the transaction history.
 
-- **Manage Account Creation**: Approve or reject new accounts displayed by ID.
-- **Process Account Deletion**: Opt to delete accounts or return to menu.
-- **Review Existing Accounts**: View detailed information about all accounts.
-- **Logout**: End session and return to main menu.
+#### 5. `Transaction`
+* **Description:** Represents a transaction with attributes like type (deposit, withdrawal), amount, and date.
+* **Responsibilities:**
+    * Captures the details of a financial transaction.
+* **Methods:**
+    * `getType()`, `getAmount()`, `getDate()`: Getters for the transaction attributes.
+    * `toString()`: Returns a formatted string representation of the transaction.
 
-This README provides comprehensive guidance on interacting with our banking application system, ensuring clarity for all user actions and administrative functions.
+### Utility and Storage Classes
+
+#### 1. `FileHandler`
+* **Description:** Handles reading and writing to files (accounts, transactions, requests for creation and deletion).
+* **Responsibilities:**
+    * Ensures the existence of required files and handles data serialization.
+    * Manages account requests, existing accounts, and deletion requests.
+* **Methods:**
+    * `ensureFilesExist()`: Ensures the necessary files are created.
+    * `saveAccountRequest(Account account)`: Saves a new account request for approval.
+    * `isDuplicateAccountRequest(String username)`: Checks for duplicate account creation requests.
+    * `displayAccountRequests()`: Displays all pending account requests.
+    * `displayDeletionRequests()`: Displays all pending deletion requests.
+    * `displayExistingAccounts()`: Displays all existing accounts.
+    * `removeAccount(String username)`: Deletes an existing account.
+    * `saveDeletionRequest(String username)`: Requests an account for deletion.
+    * `updateAccountBalance(Account account)`: Updates the balance of an existing account.
+    * `loadAccountRequest(String username)`: Loads an account request by username.
+    * `loadAccount(String username)`: Loads an existing account by username.
+    * `saveExistingAccount(Account account)`: Saves an approved account to the existing accounts file.
+
+#### 2. `Authentication`
+* **Description:** Manages login procedures for users and the admin.
+* **Responsibilities:**
+    * Verifies credentials against stored data.
+* **Methods:**
+    * `verifyUserCredentials(String username, String password)`: Verifies a user's credentials.
+    * `verifyAdminCredentials(String username, String password)`: Verifies an admin's credentials.
+    * `isPendingApproval(String username)`: Checks if a username has a pending account request.
+
+#### 3. `PasswordUtils`
+* **Description:** Provides utilities for password security.
+* **Responsibilities:**
+    * Hashes passwords using SHA-256.
+* **Methods:**
+    * `hashPassword(String password)`: Hashes a password and returns its Base64 representation.
+
+#### 4. `InputHelper`
+* **Description:** Helps in managing input and output in the console.
+* **Responsibilities:**
+    * Handles user inputs and displays messages or menus.
+* **Methods:**
+    * `readString(String prompt)`: Prompts the user for a string input.
+    * `readInt(String prompt)`: Prompts the user for an integer input.
+    * `readDouble(String prompt)`: Prompts the user for a double input.
+    * `pressAnyKeyToContinue(String message)`: Displays a message and waits for the user to press any key.
+
