@@ -6,9 +6,9 @@ public class AdminManager {
     public void handleAdmin() {
         System.out.println("Welcome Admin!");
         System.out.println("Please enter your credentials:");
-        System.out.println("Username:");
+        System.out.print("Username: ");
         String username = scanner.next();
-        System.out.println("Password:");
+        System.out.print("Password: ");
         String password = scanner.next();
 
         if (Authentication.verifyAdminCredentials(username, password)) {
@@ -18,14 +18,40 @@ public class AdminManager {
         }
     }
 
+    private void approveAccountCreation() {
+        System.out.print("Enter username to approve: ");
+        String usernameToApprove = scanner.next();
+        Account account = FileHandler.loadAccountRequest(usernameToApprove);
+        if (account != null) {
+            FileHandler.saveExistingAccount(account); // Save account correctly
+            System.out.println("Account with username " + usernameToApprove + " approved!");
+        } else {
+            System.out.println("No matching account request found.");
+        }
+    }    
+
+    private void approveAccountDeletion() {
+        System.out.print("Enter username to delete: ");
+        String usernameToDelete = scanner.next();
+        if (FileHandler.removeAccount(usernameToDelete)) {
+            FileHandler.removeDeletionRequest(usernameToDelete);
+            System.out.println("Account with username " + usernameToDelete + " deleted!");
+        } else {
+            System.out.println("No matching account request found.");
+        }
+    }
+
     private void showAdminMenu() {
         boolean active = true;
         while (active) {
             System.out.println("Welcome back!");
-            System.out.println("If you want to view account requests for creation, enter (1):");
-            System.out.println("If you want to view account requests for deletion, enter (2):");
-            System.out.println("If you want to display existing accounts, enter (3):");
-            System.out.println("Enter (4) to exit and return to the main menu.");
+            System.out.println("(1) View account requests for creation");
+            System.out.println("(2) View account requests for deletion");
+            System.out.println("(3) Display existing accounts");
+            System.out.println("(4) Approve account creation requests");
+            System.out.println("(5) Approve account deletion requests");
+            System.out.println("(6) Exit and return to the main menu");
+            System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             switch (choice) {
@@ -39,6 +65,12 @@ public class AdminManager {
                     FileHandler.displayExistingAccounts();
                     break;
                 case 4:
+                    approveAccountCreation();
+                    break;
+                case 5:
+                    approveAccountDeletion();
+                    break;
+                case 6:
                     active = false;
                     break;
                 default:

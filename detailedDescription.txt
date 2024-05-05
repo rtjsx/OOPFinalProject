@@ -1,22 +1,25 @@
-files: file for account request, file for exisiting accounts (with their corresponding deposit and withdrawal history), file for account deletion requests(by id so they can be selected), serialized password keeper (holds the username : password pairs by account id, and is serialized so that it cannot be read by a human if opened).
+for developers/instruction, else look at the nicely formatted explained README.md file.
+console depiction, followed by a class and method description:
 
-The admin authentication should already be decided before the program begins. So the username and password are not chosen by the admin logging in, but should be known beforehand and included in the code. 
+admin credentials: username: admin, password: adminPass
 
-After a new user fills out the form. The information for that specific user should be added to a file( with a number id representing it), and that file should be read when the admin selects to look through the exisiting account request. Then the admin can select a particular account request by its particular id, when viewing deletion and approval requests.  
+files: file for account request - existingRequests.txt , file for exisiting accounts (with their corresponding deposit and withdrawal history) - exisitingAccount.txt, file for account deletion requests - deletionRequests.txt. Passwords hashed when stored in any sort of file, to make sure nobody can read them.
 
-Everything, all interactions and menus displayed below should be displayed and entered in the console.
+The admin authentication should already be decided before the program begins. So the username and password are not chosen by the admin logging in, but should be known beforehand and included in the code(username and password depicted above).
 
 
-- When the program gets started, the following main menu should get displayed: 
+Everything, all interactions and menus displayed below are displayed and entered in the console.
+
+
+- When the program gets started, the following main menu should get displayed:
 ——————————
 Welcome to the best banking app!
-
-If you are a new user enter (1):
-If you are an exisiting user enter (2):
-If you are an admin enter (3).
-To end the program enter (4).
-
+(1) New user registration
+(2) Existing user login
+(3) Admin access
+(4) Exit program
 ——————————
+Choose an option:
 
 - after a selection is made the user transferred to another menu depending on their choice.
 
@@ -75,110 +78,142 @@ Redirecting you back to main menu….
 ——————————
 Welcome back!
 
-If you want to withdraw enter (1):
-If you want to deposit enter (2):
-If you want to view your deposit/withdrawal history enter (3).
-If you want your account to be deleted enter (4).
-Enter (5) to exit and return to the main menu.
+Welcome back!
+(1) Withdraw
+(2) Deposit
+(3) View transaction history
+(4) Display balance
+(5) Request account deletion
+(6) Exit and return to main menu
+Choose an option:
 ——————————
 
 
 
 - if the existing user enters (1). The will then be asked how much they want to withdraw. If they attempt to withdraw more than existing funds, an alert message is displayed that this is not allowed and the user is sent back to the exisiting user main menu. The amount with the current date is added to the transaction history of the user.
 - if the existing user enters (2). The user is then asked how much they want to deposit. They select the amount and the money is added to their balance.  The amount with the current date is added to the transaction history of the user.
-- if the existing user enters (3). The user is shown all previous transactions. The user is shown a message which says: Press any key to return to existing user menu. By pressing any key, he is returned to the main existing user menu.
-- if the existing user enters (4). The user is then asked: Are you sure? Enter (1) to confirm, enter (2) to return existing user menu.  If the user confirm with (1) that they want their account to be deleted. They are automatically logged out back to the entry main menu, and their account details with the account id added to the file of account deletion request, where it can later be viewed and deleted by an admin.
-- if the existing user enters (5). The user is logged out and returned to main entry menu.
+- if the existing user enters (3). The user is shown all previous transactions with the trasactio type, amount and date.(e.g. Type: deposit, Amount: $1234.00, Date: 2024-05-05 09:39:07). The user is automatically returned to the main user menu after the transactio history is displayed.
+- if the exisiting user enters (4). The user is shown their current balance.
+- if the existing user enters (5). The user is then asked: Are you sure? Enter (1) to confirm, enter (2) to return  menu.  If the user confirm with (1) that they want their account to be deleted. They are automatically logged out back to the entry main menu, and their account details is added to the file of account deletion request, where it can later be viewed and deleted by an admin. If the user enters (2), the the user remains in the current user session and the user menu is shown once again.
+- if the existing user enters (6). The user is logged out and returned to main entry menu.
 
 - when the admin enters correct credentials, they should see the following menu:
 
 ——————————
 Welcome back!
-
-If you want to view account requests for creation, enter (1):
-If you want to view account requests for deletion, enter (2):
-If you want to display existing accounts (account id, their name, age, credit score, and total money on account), enter (3).
-Enter (4) to exit and return to the main menu.
+(1) View account requests for creation
+(2) View account requests for deletion
+(3) Display existing accounts
+(4) Approve account creation requests
+(5) Approve account deletion requests
+(6) Exit and return to the main menu
+Choose an option:
 ——————————
 
 
-- if the admin selects (1). The file with the file creation request should be read. After it is read, all requests should be displayed with a corresponding id.
-- The admin is then asked by the program: Enter (1) to exit. Enter (2) to approve.
-- If the admin enters (2), he is asked: Which account do you want to approve?
-- The admin enters the id that he want to approve. The data is removed from the file with approval requests and an account with its own id is added to the file of exisiting users. 
-- Admin sees a confirmation message: Account with id (id) created!
+- if the admin selects (1). The file with the file creation request should be read. After it is read, all requests should be displayed.
+- if the admin selects (2). The file with the file deletion requests should be read. After it is read, all requests should be displayed.
+- if the admin selects (3). The file with the file with existing users will be be read. After it is read, all current accounts should be displayed.
+- if the admin selects (4). Then the user is asked to type in the username of the user that they want to approve. If the username exists, the account is created, and added to the file of exisiting users, and the account is removed from the account request files.
+- if the admin selects (5). Then the user is asked to type in the username of the user that they want to approve for deletion. If the username exists, the account is deleted, and removed from file of exisiting users, and the account is removed from the account deletion files.
+- if the admin selects (6). The admin is logged out and returned to main menu.
 - Then the admin is returned to the admin main menu.
 
-- if the admin selects (2). The file with the file deletion requests should be read. After it is read, all requests should be displayed with a corresponding id.
-- The admin is then asked by the program: Enter (1) to exit. Enter (2) to delete.
-- If the admin enters (2), he is asked: Which account do you want to delete?
-- The admin enters the id that he want to delete. The data is removed from the file with delete requests and the account is deleted from exisiting users. 
-- Admin sees a confirmation message: Account with id (id) deleted!
-- Then the admin is returned to the admin main menu.
-
-- If the admin selects (3). All the exisiting users are displayed. Each user is displayed with their account id,their name, age, credit score, and total money on account. The admin  is shown a message which says: Press any key to return to existing user menu. By pressing any key, he is returned to main admin menu.
-
-- if the admin selects (4). The admin is logged out and returned to main entry menu.
 
 ——————————
 
 
 Main Classes
-
 1. MainApp
-    * Entry point for the application.
-    * Handles the main menu and redirects to user, admin, or exit based on the user’s choice.
+    * Description: Entry point for the application.
+    * Responsibilities:
+        * Displays the main menu and handles navigation to user, admin, or exit based on the user’s choice.
+        * Utilizes the UserManager and AdminManager for user and admin-related operations.
+    * Methods:
+        * main(String[] args): Initializes the application and loops through the main menu options.
 2. UserManager
-    * Handles operations related to user accounts including registration, login, and transaction management.
+    * Description: Handles operations related to user accounts, including registration, login, and transaction management.
+    * Responsibilities:
+        * Manages new user registration, login, and session management.
+        * Manages individual user transactions like deposits and withdrawals.
+    * Methods:
+        * handleNewUser(): Registers a new user and saves the account request for approval.
+        * handleExistingUser(): Authenticates an existing user and redirects to the user menu.
+        * showUserMenu(String username): Provides the user menu options for transactions, balance, and history.
 3. AdminManager
-    * Manages admin functions such as approving new accounts, deleting accounts, and viewing accounts and requests.
+    * Description: Manages admin functions such as approving new accounts, deleting accounts, and viewing accounts and requests.
+    * Responsibilities:
+        * Authenticates admin credentials and provides the admin menu.
+        * Manages approval of account creation and deletion requests.
+    * Methods:
+        * handleAdmin(): Authenticates an admin and redirects to the admin menu.
+        * approveAccountCreation(): Approves a new account request.
+        * approveAccountDeletion(): Approves a request for account deletion.
+        * showAdminMenu(): Displays the admin menu with account-related options.
 4. Account
-    * Represents a user account with attributes like username, password, name, age, credit score, and balance.
-    * Manages individual user transactions like deposits and withdrawals.
+    * Description: Represents a user account with attributes like username, password, name, age, credit score, and balance.
+    * Responsibilities:
+        * Manages individual user transactions like deposits and withdrawals.
+        * Keeps a transaction history and provides account information.
+    * Methods:
+        * displayBalance(): Displays the current balance.
+        * withdraw(double amount): Withdraws a specified amount from the balance.
+        * deposit(double amount): Deposits a specified amount to the balance.
+        * showHistory(): Displays the transaction history.
+        * requestDeletion(): Requests the deletion of the account.
+        * addTransaction(Transaction transaction): Adds a transaction to the transaction history.
 5. Transaction
-    * Represents a transaction with attributes like type (deposit, withdrawal), amount, and date.
+    * Description: Represents a transaction with attributes like type (deposit, withdrawal), amount, and date.
+    * Responsibilities:
+        * Captures the details of a financial transaction.
+    * Methods:
+        * getType(), getAmount(), getDate(): Getters for the transaction attributes.
+        * toString(): Returns a formatted string representation of the transaction.
 
-
- Utility and Storage Classes
-
+Utility and Storage Classes
 1. FileHandler
-    * Handles reading and writing to files (accounts, transactions, requests for creation and deletion).
-    * Serializes and deserializes data where necessary.
+    * Description: Handles reading and writing to files (accounts, transactions, requests for creation and deletion).
+    * Responsibilities:
+        * Ensures the existence of required files and handles data serialization.
+        * Manages account requests, existing accounts, and deletion requests.
+    * Methods:
+        * ensureFilesExist(): Ensures the necessary files are created.
+        * saveAccountRequest(Account account): Saves a new account request for approval.
+        * isDuplicateAccountRequest(String username): Checks for duplicate account creation requests.
+        * displayAccountRequests(): Displays all pending account requests.
+        * displayDeletionRequests(): Displays all pending deletion requests.
+        * displayExistingAccounts(): Displays all existing accounts.
+        * removeAccount(String username): Deletes an existing account.
+        * saveDeletionRequest(String username): Requests an account for deletion.
+        * updateAccountBalance(Account account): Updates the balance of an existing account.
+        * loadAccountRequest(String username): Loads an account request by username.
+        * loadAccount(String username): Loads an existing account by username.
+        * saveExistingAccount(Account account): Saves an approved account to the existing accounts file.
 2. Authentication
-    * Manages login procedures for users and the admin.
-    * Verifies credentials against stored data.
-3. InputHelper
-    * Helps in managing input and output in the console.
-    * Handles user inputs and displays messages or menus.
+    * Description: Manages login procedures for users and the admin.
+    * Responsibilities:
+        * Verifies credentials against stored data.
+    * Methods:
+        * verifyUserCredentials(String username, String password): Verifies a user's credentials.
+        * verifyAdminCredentials(String username, String password): Verifies an admin's credentials.
+        * isPendingApproval(String username): Checks if a username has a pending account request.
+3. PasswordUtils
+    * Description: Provides utilities for password security.
+    * Responsibilities:
+        * Hashes passwords using SHA-256.
+    * Methods:
+        * hashPassword(String password): Hashes a password and returns its Base64 representation.
+4. InputHelper
+    * Description: Helps in managing input and output in the console.
+    * Responsibilities:
+        * Handles user inputs and displays messages or menus.
+    * Methods:
+        * readString(String prompt): Prompts the user for a string input.
+        * readInt(String prompt): Prompts the user for an integer input.
+        * readDouble(String prompt): Prompts the user for a double input.
+        * pressAnyKeyToContinue(String message): Displays a message and waits for the user to press any key.
 
 
 
-Implementation Details
-
-1. MainApp Class
-    * Displays the main menu and handles the redirection based on user input.
-    * Creates instances of UserManager and AdminManager as needed.
-2. UserManager Class
-    * Manages all user-related functionalities such as signing up a new user, logging in existing users, processing deposit and withdrawal requests, and handling account deletion.
-3. AdminManager Class
-    * Handles the functionalities required by an admin, such as viewing account creation and deletion requests, approving or deleting accounts, and viewing all existing accounts.
-4. Account Class
-    * Contains user data and methods to handle deposits, withdrawals, and returning transaction history.
-5. Transaction Class
-    * Stores details about each transaction and can format details for display or storage.
-6. FileHandler Class
-    * Handles all file operations like reading from and writing to files, searching for specific data in files, and updating files as needed. Implements serialization for secure storage of sensitive information like passwords.
-7. Authentication Class
-    * Provides methods to authenticate users and admin using stored username and password combinations. Could include password encryption for security.
-8. InputHelper Class
-    * Handles console inputs and outputs, abstracting the complexity of user interaction and validation.
-
-
-
-Example Usage
-* Upon starting the app, MainApp displays the main menu.
-* Depending on the selection, UserManager or AdminManager takes over.
-* Actions like creating an account will involve UserManager creating a new Account instance and using FileHandler to save it to accountRequests.txt.
-* Admin actions will read from request files, modify account data as needed, and update storage files using FileHandler.
 
 
