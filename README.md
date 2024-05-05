@@ -1,5 +1,18 @@
 # README.md
 
+## Participants
+- Nikola Peev (RookieRapscallion)
+- Hojong Shim (HojongShim)
+- Haihan Jiang (rtjsx)
+
+### UML Diagrams
+UML Diagrams are located within the `UmlDiagram` directory. Within that directory, there are 5 sub-directories:
+- **AdminSequenceDiagrams:** 6 diagrams in total
+- **NewUserSequenceDiagrams:** 1 diagram in total
+- **UserSequenceDiagrams:** 6 diagrams in total
+- **ClassDiagrams:** 1 diagram in total
+- **UseCaseDiagrams:** 1 diagram in total
+
 ## Console Banking Application
 
 ### Admin Credentials
@@ -193,13 +206,4 @@ Choose an option:
 * **Methods:**
     * `hashPassword(String password)`: Hashes a password and returns its Base64 representation.
 
-#### 4. `InputHelper`
-* **Description:** Helps in managing input and output in the console.
-* **Responsibilities:**
-    * Handles user inputs and displays messages or menus.
-* **Methods:**
-    * `readString(String prompt)`: Prompts the user for a string input.
-    * `readInt(String prompt)`: Prompts the user for an integer input.
-    * `readDouble(String prompt)`: Prompts the user for a double input.
-    * `pressAnyKeyToContinue(String message)`: Displays a message and waits for the user to press any key.
 
